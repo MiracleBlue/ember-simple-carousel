@@ -2,5 +2,8 @@
 'use strict';
 
 module.exports = {
-  name: 'ember-cli-simple-carousel'
+  name: 'ember-simple-carousel',
+  included: function(app) {
+    this._super.included(app);
+  }
 };
