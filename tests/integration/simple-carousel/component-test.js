@@ -39,5 +39,29 @@ describeComponent(
 
       expect(listItemElems).to.equal(listItemTexts);
     });
+
+    it('should increment the active item when the next button is clicked', function(done) {
+      const list = [
+        {text: 'hello1'},
+        {text: 'hello2'},
+        {text: 'hello3'},
+        {text: 'hello4'}
+      ];
+
+      const change = activeItem => {
+        expect(activeItem).to.equal(1);
+        done();
+      };
+
+      this.setProperties({list, change});
+
+      this.render(hbs`{{#simple-carousel list on-change=(action change) as |item|}}
+        <div class='list-item'>{{item.text}}</div>
+      {{/simple-carousel}}`);
+
+      const nextButton = this.$('.simple-carousel__next');
+
+      nextButton.click();
+    })
   }
 );
