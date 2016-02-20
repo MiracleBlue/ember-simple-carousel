@@ -8,7 +8,11 @@ module.exports = function(defaults) {
     babel: {
       stage: 0,
       includePolyfill: true
-    }
+    },
+    'ember-cli-mocha': {
+      useLintTree: false
+    },
+    hinting: false
   });
 
   /*

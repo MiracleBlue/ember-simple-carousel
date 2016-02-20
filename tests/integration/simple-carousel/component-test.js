@@ -14,17 +14,30 @@ describeComponent(
   },
   function() {
     it('renders', function() {
-      // Set any properties with this.set('myProperty', 'value');
-      // Handle any actions with this.on('myAction', function(val) { ... });
-      // Template block usage:
-      // this.render(hbs`
-      //   {{#simple-carousel}}
-      //     template content
-      //   {{/simple-carousel}}
-      // `);
-
       this.render(hbs`{{simple-carousel}}`);
       expect(this.$()).to.have.length(1);
+    });
+
+    it('should accept a list of items and yield them to the template block', function() {
+      const list = [
+        {text: 'hello1'},
+        {text: 'hello2'},
+        {text: 'hello3'},
+        {text: 'hello4'}
+      ];
+
+      this.setProperties({list});
+
+      this.render(hbs`{{#simple-carousel list as |item|}}
+        <div class='list-item'>{{item.text}}</div>
+      {{/simple-carousel}}`);
+
+      const jQuery = this.$;
+
+      const listItemElems = this.$('list-item').map((index, item) => jQuery(item).text());
+      const listItemTexts = list.map(item => item.text);
+
+      expect(listItemElems).to.equal(listItemTexts);
     });
   }
 );

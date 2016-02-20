@@ -1,4 +1,4 @@
-# ember-simple-carousel
+# Ember-simple-carousel
 
 This README outlines the details of collaborating on this Ember addon.
 
