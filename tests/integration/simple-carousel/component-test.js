@@ -34,10 +34,10 @@ describeComponent(
 
       const jQuery = this.$;
 
-      const listItemElems = this.$('list-item').map((index, item) => jQuery(item).text());
+      const listItemElems = this.$('.list-item').map((index, item) => jQuery(item).text()).get();
       const listItemTexts = list.map(item => item.text);
 
-      expect(listItemElems).to.equal(listItemTexts);
+      expect(listItemElems).to.deep.equal(listItemTexts);
     });
 
     it('should increment the active item when the next button is clicked', function(done) {
@@ -62,6 +62,30 @@ describeComponent(
       const nextButton = this.$('.simple-carousel__next');
 
       nextButton.click();
-    })
+    });
+
+    it('should decrement the active item when the previous button is clicked', function(done) {
+      const list = [
+        {text: 'hello1'},
+        {text: 'hello2'},
+        {text: 'hello3'},
+        {text: 'hello4'}
+      ];
+
+      const change = activeItem => {
+        expect(activeItem).to.equal(0);
+        done();
+      };
+
+      this.setProperties({list, change});
+
+      this.render(hbs`{{#simple-carousel list activeItem=1 on-change=(action change) as |item|}}
+        <div class='list-item'>{{item.text}}</div>
+      {{/simple-carousel}}`);
+
+      const previousButton = this.$('.simple-carousel__previous');
+
+      previousButton.click();
+    });
   }
 );

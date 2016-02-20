@@ -1,1 +1,5 @@
-{{yield}}
+<button class='simple-carousel__previous' {{action 'previous'}}>Previous</button>
+{{#each list as |item|}}
+  {{yield item}}
+{{/each}}
+<button class='simple-carousel__next' {{action 'next'}}>Next</button>
