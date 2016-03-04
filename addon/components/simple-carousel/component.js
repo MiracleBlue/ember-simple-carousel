@@ -3,47 +3,56 @@ import layout from './template';
 
 export default Ember.Component.extend({
   layout,
-  activeItem: 0,
+  classNames: ['simple-carousel'],
+
+  activeItemIndex: 0,
+
+  list: null,
+
+  nextItemIndex: Ember.computed('activeItemIndex', 'list.[]', {
+    get() {
+      const activeItemIndex = this.get('activeItemIndex');
+      const listLength = this.get('list.length');
+      const nextItemIndex = activeItemIndex + 1;
+
+      if (nextItemIndex < listLength) return nextItemIndex;
+      return 0;
+    }
+  }),
+
+  previousItemIndex: Ember.computed('activeItemIndex', 'list.[]', {
+    get() {
+      const activeItemIndex = this.get('activeItemIndex');
+      const listLength = this.get('list.length');
+      const previousItemIndex = activeItemIndex - 1;
+
+      if (previousItemIndex >= 0) return previousItemIndex;
+
+      return listLength - 1;
+    }
+  }),
 
   _incrementActiveItem() {
-    const calcNextActiveItem = (listLength, activeItem) => {
-      const nextActiveItem = activeItem + 1;
-      if (nextActiveItem < listLength) return nextActiveItem;
-      return 0;
-    };
+    const nextItemIndex = this.get('nextItemIndex');
 
-    const listLength = this.get('list.length');
-    const activeItem = this.get('activeItem');
+    this.set('activeItemIndex', nextItemIndex);
 
-    const nextActiveItem = calcNextActiveItem(listLength, activeItem);
-
-    this.set('activeItem', nextActiveItem);
-
-    return nextActiveItem;
+    return nextItemIndex;
   },
 
   _decrementActiveItem() {
-    const calcPreviousActiveItem = (listLength, activeItem) => {
-      const nextActiveItem = activeItem - 1;
-      if (nextActiveItem >= 0) return nextActiveItem;
-      return listLength - 1;
-    };
+    const previousItemIndex = this.get('previousItemIndex');
 
-    const listLength = this.get('list.length');
-    const activeItem = this.get('activeItem');
+    this.set('activeItemIndex', previousItemIndex);
 
-    const nextActiveItem = calcPreviousActiveItem(listLength, activeItem);
-
-    this.set('activeItem', nextActiveItem);
-
-    return nextActiveItem;
+    return previousItemIndex;
   },
 
   actions: {
     next() {
-      const nextActiveItem = this._incrementActiveItem();
+      const nextItemIndex = this._incrementActiveItem();
 
-      this.get('on-change')(nextActiveItem);
+      this.get('on-change')(nextItemIndex);
     },
     previous() {
       const previousActiveItem = this._decrementActiveItem();

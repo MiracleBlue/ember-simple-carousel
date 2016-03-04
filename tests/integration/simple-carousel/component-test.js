@@ -6,6 +6,13 @@ import {
 } from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
 
+const basicList = [
+  {text: 'hello1'},
+  {text: 'hello2'},
+  {text: 'hello3'},
+  {text: 'hello4'}
+];
+
 describeComponent(
   'simple-carousel',
   'Integration: SimpleCarouselComponent',
@@ -19,12 +26,7 @@ describeComponent(
     });
 
     it('should accept a list of items and yield them to the template block', function() {
-      const list = [
-        {text: 'hello1'},
-        {text: 'hello2'},
-        {text: 'hello3'},
-        {text: 'hello4'}
-      ];
+      const list = basicList;
 
       this.setProperties({list});
 
@@ -41,12 +43,7 @@ describeComponent(
     });
 
     it('should increment the active item when the next button is clicked', function(done) {
-      const list = [
-        {text: 'hello1'},
-        {text: 'hello2'},
-        {text: 'hello3'},
-        {text: 'hello4'}
-      ];
+      const list = basicList;
 
       const change = activeItem => {
         expect(activeItem).to.equal(1);
@@ -65,12 +62,7 @@ describeComponent(
     });
 
     it('should decrement the active item when the previous button is clicked', function(done) {
-      const list = [
-        {text: 'hello1'},
-        {text: 'hello2'},
-        {text: 'hello3'},
-        {text: 'hello4'}
-      ];
+      const list = basicList;
 
       const change = activeItem => {
         expect(activeItem).to.equal(0);
@@ -79,7 +71,7 @@ describeComponent(
 
       this.setProperties({list, change});
 
-      this.render(hbs`{{#simple-carousel list activeItem=1 on-change=(action change) as |item|}}
+      this.render(hbs`{{#simple-carousel list activeItemIndex=1 on-change=(action change) as |item|}}
         <div class='list-item'>{{item.text}}</div>
       {{/simple-carousel}}`);
 
